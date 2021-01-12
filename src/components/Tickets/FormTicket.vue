@@ -1,5 +1,5 @@
 <template>
-    <form>
+    <form v-on:submit.prevent="submitForm">
         <div>
             <label>Title</label>
             <input type="text" v-model="title"/>
@@ -60,8 +60,10 @@
 </template>
 
 <script>
+  import { v4 } from 'uuid';
   export default {
     name: "FormTicket",
+    props : { submitCallback : Function},
     data(){
       return {
         users : [],
@@ -76,6 +78,32 @@
         priority :  null,
         point :  null,
         createdDate :  null,
+      }
+    },
+    methods : {
+      submitForm(){
+        this.errors = {};
+
+        if(!this.title) this.errors.title = 'Title is required';
+        if(!this.type) this.errors.type = 'Type is required';
+        if(!this.creator) this.errors.creator = 'Creator is required';
+
+        if(!Object.values(this.errors).length){
+          const ticket = {
+            id : v4(),
+            ticketNumber: Math.floor(Math.random() * (1000 - 100)) + 100,
+            title: this.title,
+            description: this.description,
+            status : this.status,
+            assignedTo : this.assignedTo,
+            creator : this.creator,
+            type : this.type,
+            priority : this.priority,
+            point : this.point,
+            createdDate : new Date()
+          };
+          this.submitCallback(ticket);
+        }
       }
     }
   }
