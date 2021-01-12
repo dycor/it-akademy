@@ -21,7 +21,6 @@ export default {
   },
   async beforeCreate(){
     const tickets = await ticketsService.getTickets();
-    console.log(tickets)
     this.tickets = tickets;
   }
 }

@@ -61,6 +61,8 @@
 
 <script>
   import { v4 } from 'uuid';
+  import usersService from '@/services/users';
+
   export default {
     name: "FormTicket",
     props : { submitCallback : Function},
@@ -105,6 +107,10 @@
           this.submitCallback(ticket);
         }
       }
+    },
+    async beforeCreate(){
+      const users = await usersService.getUsers();
+      this.users = users;
     }
   }
 </script>
